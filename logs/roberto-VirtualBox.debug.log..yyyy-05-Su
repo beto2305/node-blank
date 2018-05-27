@@ -329,3 +329,10 @@
 2018-05-27T21:36:55.227Z - info: Server initialized on 3000 port
 2018-05-27T21:36:59.927Z - debug: api.hello.handleHelloGet - req method: GET
 2018-05-27T21:36:59.931Z - debug: controller.hello - parameter: api.handleHello
+2018-05-27T21:52:39.791Z - info: Running on development environment. NODE_ENV is undefined
+2018-05-27T21:52:39.901Z - info: Express loaded!
+2018-05-27T21:52:39.902Z - info: all modules loaded
+2018-05-27T21:52:39.916Z - info: Running on development environment. NODE_ENV is undefined
+2018-05-27T21:52:39.917Z - info: Server initialized on 3000 port
+2018-05-27T21:52:50.576Z - debug: api.hello.handleHelloGet - req method: GET
+2018-05-27T21:52:50.577Z - debug: controller.hello - parameter: api.handleHello
