@@ -1,0 +1,6 @@
+{
+    "server": {
+        "environment": "production",
+        "port": 3010
+    }
+}

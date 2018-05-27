@@ -1,0 +1,38 @@
+{
+  "name": "node-blank",
+  "version": "1.0.0",
+  "description": "app model to develop node.js applications",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beto2305/node-blank.git"
+  },
+  "author": "rarruda@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beto2305/node-blank/issues"
+  },
+  "homepage": "https://github.com/beto2305/node-blank#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "config": "^1.30.0",
+    "consign": "^0.1.6",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.3",
+    "express-joi-validator": "^2.0.0",
+    "express-session": "^1.15.6",
+    "helmet": "^3.12.1",
+    "joi": "^13.3.0",
+    "os": "^0.1.1",
+    "path": "^0.12.7",
+    "winston": "^2.4.2",
+    "winston-daily-rotate-file": "^3.2.0"
+  }
+}
