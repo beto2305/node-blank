@@ -17,7 +17,7 @@ module.exports.logger = new (winston.Logger)({
             silent: false, /* true for disable log */
             level: env === 'development' ? 'debug' : 'info',
             filename: './logs/'+ hostname + '.debug.log',
-            datePattern: '.yyyy-MM-dd',
+            datePattern: 'YYYY-MM-DD',
             json: false,
             timestamp: true,
         })
@@ -26,7 +26,7 @@ module.exports.logger = new (winston.Logger)({
     exceptionHandlers: [
         new (require('winston-daily-rotate-file'))( {
             filename: './logs/'+hostname+'.exceptions.log',
-            datePattern: '.yyyy-MM-dd',
+            datePattern: 'YYYY-MM-DD',
             json: false,
             timestamp: true
         })
