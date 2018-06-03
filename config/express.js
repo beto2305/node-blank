@@ -68,7 +68,7 @@ app.get('*', function(req, res) {
 if ('development' == conf.get('server.environment')) {
     app.use(function (err, req, res, next) {
         if (err) {
-            return res.status(err.output.statusCode).json(err.output.payload);
+            return res.status(400).json(err);
         }
     });
 }

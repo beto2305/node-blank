@@ -4,12 +4,10 @@ module.exports = function (app) {
 
     var controller = {}
 
-    controller.handleHello = (parameter) => {
-        logger.debug("controller.hello - parameter: " + parameter);
+    controller.handleHello = (name) => {
+        logger.debug("controller.hello - name: " + name);
 
-        var msg = "This is a message from controller. I've received parameter: " + parameter;
-
-        return msg;
+        return "Dear, " + name;
 
     }
 
