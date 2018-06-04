@@ -2,5 +2,13 @@
     "server": {
         "environment": "development",
         "port": 3000
+    },
+    "database": {
+        "host": "ds147030.mlab.com",
+        "port": 47030,
+        "dbName": "dev_node_blank",
+        "dbUser": "dev_node_blank_db_user",
+        "dbPwd" : "dev_node_blank_db_user_2018"
     }
+
 }

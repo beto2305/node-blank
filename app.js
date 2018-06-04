@@ -9,7 +9,7 @@ const logger = require('./application/libs/logger').logger;
 
 
 logger.info("all modules loaded");
-//require('./config/database')();
+require('./config/database')();
 
 
 server.listen( app.get('port'), () => {

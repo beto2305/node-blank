@@ -4,7 +4,8 @@ module.exports = function(app) {
     var api = app.api.hello;
      
     // GET method
-    app.get('/v1/hello/:name', api.handleHelloGet);
+    app.get('/v1/hello', api.handleHelloGetMany);
+    app.get('/v1/hello/:cpf', api.handleHelloGetOne);
 
     // POST method
     app.post('/v1/hello', api.handleHelloPost);
