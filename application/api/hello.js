@@ -1,5 +1,7 @@
 const logger = require('../libs/logger').logger;
 const Joi = require('joi');
+const mongoose = require('mongoose');
+
 const HelloModel = mongoose.model('Hello');
 
 module.exports = function (app) {
@@ -11,10 +13,19 @@ module.exports = function (app) {
     api.handleHelloGetMany = (req, res) => {
         logger.debug("api.hello.handleHelloGetMany - req method: " + req.method);
         try {
-            res.send("Too many results - req method: " + req.method);
-            return;
+            HelloModel.find( (err, data) => {
+                if (err) {
+                    logger.error(err)
+                    res.status(400).json(err);
+                    return;
+                }
+                logger.debug("api.hello.handleHelloGetMany - found: " + data.length + " records.");
+                res.json(data)
+                return;
+            });
+
         } catch (error) {
-            res.status(400).send('Invalid request: ' + error);
+            res.status(400).json('Invalid request: ' + error);
             return;
         }
     }
@@ -32,15 +43,24 @@ module.exports = function (app) {
             const validateResult = Joi.validate(req.params, helloGetSchema);
 
             if (validateResult.error) {
-                res.status(400).send(validateResult.error.details[0].message);
+                res.status(400).json(validateResult.error.details[0].message);
                 return;
             }
 
-            var newName = controller.handleHello(req.query.cpf);
-
-            res.send("Hello Dear, with CPF" + newName + " - req method: " + req.method);            
+            HelloModel.findOne({ cpf: req.params.cpf }, (err, data) => {
+                if (err) {
+                    logger.error(err)
+                    res.status(400).json(err);
+                    return;
+                } else if (! data) {
+                    res.status(404).json("cpf " + req.params.cpf + " not found");
+                    return;                 
+                }
+                res.send(data)
+                return;
+            });            
         } catch (error) {
-            res.status(400).send('Invalid request: ' + error);
+            res.status(400).json('Invalid request: ' + error);
             return;
         }
 
@@ -66,11 +86,23 @@ module.exports = function (app) {
             }
 
             // save request on database
+            var helloModel = new HelloModel({ 
+                cpf: req.body.cpf,
+                name: req.body.name
+            });
 
+            helloModel.save( (err) => {
+                if (err) {
+                    res.status(400).json(err);
+                    return;
+                }
 
-            res.send(req.body);
+            });
+    
+
+            res.json(req.body);
         } catch (error) {
-            res.status(400).send('Invalid request: ' + error);
+            res.status(400).json('Invalid request: ' + error);
             return;
         }
     }
@@ -81,7 +113,7 @@ module.exports = function (app) {
 
         var msg = controller.handleHello("api.handleHello");
 
-        res.send("req method: " + req.method);
+        res.json("req method: " + req.method);
     }
 
     return api;
