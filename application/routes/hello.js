@@ -10,10 +10,11 @@ module.exports = function(app) {
     // POST method
     app.post('/v1/hello', api.handleHelloPost);
 
-    app.route('/v1/hello')
-        .put(api.handleHello)
-        .delete(api.handleHello);
-  
+    // DELETE Method
+    app.delete('/v1/hello/:cpf', api.handleHelloDelete);
+
+    // PUT Method
+    app.put('/v1/hello/:cpf', api.handleHelloPut);
 
     return this;
   

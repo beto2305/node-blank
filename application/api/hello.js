@@ -85,6 +85,19 @@ module.exports = function (app) {
                 return;
             }
 
+            // check if CPF already exists
+            HelloModel.findOne({ cpf: req.body.cpf }, (err, data) => {
+                if (err) {
+                    logger.error(err)
+                    res.status(400).json(err);
+                    return;
+                } else if (data && data.length) {
+                    res.status(404).json("cpf " + req.params.cpf + " already exists");
+                    return;                 
+                }
+
+            });     
+
             // save request on database
             var helloModel = new HelloModel({ 
                 cpf: req.body.cpf,
@@ -107,13 +120,76 @@ module.exports = function (app) {
         }
     }
 
-    api.handleHello = (req, res) => {
-        logger.debug("api.hello.handleHello - req method: " + req.method);
-        res.setHeader('Access-Control-Allow-Origin', '*');
+    api.handleHelloDelete = (req, res) => {
+        logger.debug("api.hello.handleHelloDelete - req method: " + req.method);
 
-        var msg = controller.handleHello("api.handleHello");
+        try {
+            // schema to DELETE method
+            var helloDeleteSchema = {
+                // mandatory parameter
+                cpf: Joi.string().length(11).required()
+            };
 
-        res.json("req method: " + req.method);
+            const validateResult = Joi.validate(req.params, helloDeleteSchema);
+
+            if (validateResult.error) {
+                res.status(400).json(validateResult.error.details[0].message);
+                return;
+            }
+
+            HelloModel.remove({ cpf: req.params.cpf }, (err, data) => {
+                if (err) {
+                    logger.error(err)
+                    res.status(400).json(err);
+                } else if (data && data.result.n == 0) {
+                    res.status(404).json("cpf " + req.params.cpf + " not found");
+                } else if (data && data.result.n > 0) {
+                    res.send("cpf " + req.params.cpf + " sucessfuly removed!")
+                }
+                
+                return;
+            });            
+        } catch (error) {
+            res.status(400).json('Invalid request: ' + error);
+            return;
+        }
+
+    }
+
+    api.handleHelloPut = (req, res) => {
+        logger.debug("api.hello.handleHelloPut - req method: " + req.method);
+
+        try {
+
+            const validateCpf = Joi.validate(req.params, {cpf: Joi.string().length(11).required()});
+            if (validateCpf.error) {
+                res.status(400).json(validateCpf.error.details[0].message);
+                return;
+            }
+
+            const validateName = Joi.validate(req.body, {name: Joi.string().required()});
+            if (validateName.error) {
+                res.status(400).json(validateName.error.details[0].message);
+                return;
+            }
+
+            HelloModel.update({ cpf: req.params.cpf }, {name: req.body.name}, (err, data) => {
+                if (err) {
+                    logger.error(err)
+                    res.status(400).json(err);
+
+                } else if (data && data.n == 0) {
+                    res.status(404).json("cpf " + req.params.cpf + " not found");
+                } else if (data && data.n > 0) {
+                    res.send("cpf " + req.params.cpf + " sucessfuly updated - name:" + req.body.name)
+                }
+                return;
+            });            
+        } catch (error) {
+            res.status(400).json('Invalid request: ' + error);
+            return;
+        }
+
     }
 
     return api;
