@@ -1,13 +1,15 @@
 {
+    "api" : {
+        "name" : "api.hello",
+        "version" : "v1"
+    },
     "server": {
         "environment": "production",
         "port": 3010
     },
-    "database": {
-        "host": "ds147030.mlab.com",
-        "port": 47030,
-        "dbName": "prd_node_blank",
-        "dbUser": "prd_node_blank_db_user",
-        "dbPwd" : "prd_node_blank_db_user_2018"
-    }
+    "log" : {
+        "maxLogFileSize" : "10m", 
+        "maxLogFiles" : "30"
+    },
+    "prometheus" : "enabled"
 }
