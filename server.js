@@ -11,3 +11,6 @@ launcher.bootstrap();
 
 // Starting application
 launcher.run();
+
+// just to enable tests with mocha and chai
+module.exports = launcher.app();

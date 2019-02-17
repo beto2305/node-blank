@@ -4,12 +4,12 @@
   "description": "app model to develop node.js applications",
   "main": "app.js",
   "directories": {
-    "test": "tests"
+    "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/mocha --timeout 2000 --exit",
     "dev": "set NODE_ENV=development && node --inspect app.js",
-    "start": "node app.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -41,6 +41,10 @@
     "winston-daily-rotate-file": "^3.2.0"
   },
   "devDependencies": {
-    "nodemon": "^1.17.5"
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.17.5",
+    "request": "^2.88.0"
   }
 }

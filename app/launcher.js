@@ -79,3 +79,8 @@ exports.run = function () {
         logger.error('Err: Error listen server: ' + err);
     });
 };
+
+// just to enable tests with mocha and chai
+exports.app = function() {
+    return app;
+}
