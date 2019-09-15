@@ -1,15 +1,16 @@
 {
-    "api" : {
-        "name" : "api.hello",
-        "version" : "v1"
-    },
-    "server": {
-        "environment": "development",
-        "port": 3000
-    },
-    "log" : {
-        "maxLogFileSize" : "10m", 
-        "maxLogFiles" : "30"
-    },
-    "prometheus" : "enabled"
+	"api": {
+		"name": "api.hello",
+		"version": "v1"
+	},
+	"server": {
+		"environment": "development",
+		"port": 3000
+	},
+	"log": {
+		"maxLogFileSize": "10m",
+		"maxLogFiles": "30"
+	},
+	"sentry": "enabled",
+	"prometheus": "enabled"
 }

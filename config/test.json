@@ -1,15 +1,16 @@
 {
-    "api" : {
-        "name" : "api.hello",
-        "version" : "v1"
-    },
-    "server": {
-        "environment": "test",
-        "port": 3005
-    },
-    "log" : {
-        "maxLogFileSize" : "10m", 
-        "maxLogFiles" : "30"
-    },
-    "prometheus" : "disabled"
+	"api": {
+		"name": "api.hello",
+		"version": "v1"
+	},
+	"server": {
+		"environment": "test",
+		"port": 3005
+	},
+	"log": {
+		"maxLogFileSize": "10m",
+		"maxLogFiles": "30"
+	},
+	"sentry": "disabled",
+	"prometheus": "disabled"
 }

@@ -2,7 +2,7 @@
 
 
 module.exports.init = function (logger) {
-    
+
     let responseFactory = {
         // HTTP 1.1 / 200
         ok: (req, res, msg, logger) => {
@@ -59,6 +59,7 @@ module.exports.init = function (logger) {
             logger.error(error);
             if (res._headerSent === false) {
                 res.status(500).json(status);
+                res.end(res.sentry)
             }
         }
 
