@@ -1,8 +1,8 @@
 "use strict";
 
 
-module.exports.init = function (logger) {
-
+module.exports.init = function (app) {
+    
     let responseFactory = {
         // HTTP 1.1 / 200
         ok: (req, res, msg, logger) => {
@@ -56,10 +56,10 @@ module.exports.init = function (logger) {
                 };
 
             logger.debug('Response - serverError: ' + JSON.stringify(status));
-            logger.error(error);
+            logger.logError(error);
+
             if (res._headerSent === false) {
                 res.status(500).json(status);
-                res.end(res.sentry)
             }
         }
 

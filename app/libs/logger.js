@@ -4,9 +4,14 @@ let
     winston = require('winston'),
     os = require("os"),
     hostname = os.hostname(),
-    env = process.env.NODE_ENV || 'development';
+    env = process.env.NODE_ENV || 'development',
+    Sentry = require('@sentry/node')
+
 
 module.exports.init = function (config) {
+    if (null != config.sentry && config.sentry == 'enabled' && null !== process.env.SENTRY_DSN) {
+        Sentry.init({ dsn: process.env.SENTRY_DSN, environment: process.env.NODE_ENV });
+    }
 
     let transports = [
         new (require('winston-daily-rotate-file'))({
@@ -47,6 +52,13 @@ module.exports.init = function (config) {
         ],
         exitOnError: false
     })
+
+    logFactory.logError = (error) => {
+        logFactory.error(error)
+        if (null != config.sentry && config.sentry == 'enabled' && null !== process.env.SENTRY_DSN) {
+            Sentry.captureException(error)
+        }
+    }
 
     return logFactory;
 

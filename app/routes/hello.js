@@ -7,7 +7,7 @@ let apiFactory = require('../api/hello'),
 module.exports.init = function (app, logger) {
   logger.info("Initializing routes.")
 
-  let api = apiFactory.init(logger);
+  let api = apiFactory.init(app,logger);
 
   // ***** Route test server on! *****
   app.all(['/', '/api', '/api/v1'], function (req, res) {
@@ -35,6 +35,7 @@ module.exports.init = function (app, logger) {
 
   /* Erro Handler express-joi-validation */
   app.use((err, req, res, next) => {
+    app.get("Sentry").captureException(err.error)
     if (err.error && typeof err.error.isJoi !== 'undefined') {
       responseFactory.badRequest(req, res, err.error.toString(), logger);
     } else {
@@ -44,7 +45,7 @@ module.exports.init = function (app, logger) {
   });
 
   // catch requests for not mapped URLs
-  app.use(function(req, res){
+  app.use((req, res) => {
     let msg = 'The requested resource (' + req.originalUrl + ') with ' + req.method + ' method was not found';
     responseFactory.notFound(req, res, 'URL not found', msg, logger);
   });

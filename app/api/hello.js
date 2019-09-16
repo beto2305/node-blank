@@ -3,7 +3,7 @@
 let responseFactory = require('../libs/response-factory').init(),
     helloControllerFactory = require('../controllers/hello');
 
-module.exports.init = function (logger) {
+module.exports.init = function (app,logger) {
     logger.info("Initializing APIs.")
 
     let controller = helloControllerFactory.init(logger);
