@@ -1,63 +1,65 @@
 'use strict';
 
-let 
+let
     winston = require('winston'),
-    os = require("os"),
-    hostname = os.hostname(),
-    env = process.env.NODE_ENV || 'development',
-    Sentry = require('@sentry/node')
-
+    Sentry = require('winston-transport-sentry-node'),
+    os = require("os")
 
 module.exports.init = function (config) {
-    if (null != config.sentry && config.sentry == 'enabled' && null !== process.env.SENTRY_DSN) {
-        Sentry.init({ dsn: process.env.SENTRY_DSN, environment: process.env.NODE_ENV });
-    }
 
-    let transports = [
-        new (require('winston-daily-rotate-file'))({
-            silent: false, /* true for disable log */
-            level: env === 'development' ? 'debug' : 'info',
-            filename: './logs/' + hostname + '.log',
-            datePattern: 'YYYY-MM-DD',
-            json: false,
-            timestamp: true,
-            maxSize: config.maxLogFileSize + 'k', 
-            maxFiles: config.maxLogFiles
-        })
-    ]
+    let logFactory = winston.createLogger({
+        level: 'info',
+        format: winston.format.simple(),
 
-    // enable console only on development mode
-    if (env == 'development') {
-        transports.push(
-            new (winston.transports.Console)({
-                json: false,
-                timestamp: true,
-                colorize: true,
-                level: 'debug'
+        // By default, winston will exit after logging an uncaughtException. 
+        // If this is not the behavior you want, set exitOnError = false
+        exitOnError: false,
+        transports: [
+            //
+            // - Write all logs error (and below) to `error.log`.
+            //
+            new winston.transports.File({
+                filename: `logs / ${os.hostname()} - errors.log`,
+                level: 'error',
+                maxSize: config.log.maxLogFileSize,
+                maxFiles: config.log.maxLogFiles
             }),
-        )
-    }
+        ],
 
-    let logFactory = new (winston.Logger)({
-        transports,
+        // Handling Uncaught Exceptions with winston
+        // With winston, it is possible to catch and log uncaughtException events from your process. // With your own logger instance you can enable this behavior when it's 
+        // created or later on in your applications lifecycle
         exceptionHandlers: [
-            new (require('winston-daily-rotate-file'))({
-                filename: './logs/' + hostname + '.exceptions.log',
-                datePattern: 'YYYY-MM-DD',
-                json: false,
-                timestamp: true,
-                maxSize: config.log.maxLogFileSize, 
+            new winston.transports.File({
+                filename: `logs/ ${os.hostname()} - exceptions.log`,
+                maxSize: config.log.maxLogFileSize,
                 maxFiles: config.log.maxLogFiles
             })
-        ],
-        exitOnError: false
-    })
+        ]
+    });
 
-    logFactory.logError = (error) => {
-        logFactory.error(error)
-        if (null != config.sentry && config.sentry == 'enabled' && null !== process.env.SENTRY_DSN) {
-            Sentry.captureException(error)
-        }
+    // sentry support
+    if (null != config.sentry && config.sentry.enabled && null !== process.env.SENTRY_DSN) {
+        logFactory.add(
+            new Sentry({
+                dsn: process.env.SENTRY_DSN,
+                environment: process.env.NODE_ENV,
+                level: config.sentry.logLevel
+            })
+        );
+
+    }
+
+
+    // console only in development mode
+    if (process.env.NODE_ENV === 'development') {
+        logFactory.add(new winston.transports.Console({
+            level: 'debug',
+            format: winston.format.combine(
+                winston.format.colorize(),
+                winston.format.simple()
+            )
+        }));
     }
 
     return logFactory;

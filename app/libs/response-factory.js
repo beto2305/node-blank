@@ -2,7 +2,7 @@
 
 
 module.exports.init = function (app) {
-    
+
     let responseFactory = {
         // HTTP 1.1 / 200
         ok: (req, res, msg, logger) => {
@@ -27,7 +27,7 @@ module.exports.init = function (app) {
                     'message': msg
                 };
 
-            logger.debug('Response - notFound: ' + JSON.stringify(status));
+            logger.warn('Response - notFound: ' + JSON.stringify(status));
 
             res.status(400).json(status);
         },
@@ -41,7 +41,7 @@ module.exports.init = function (app) {
                     'message': msg && msg !== 'undefined' ? msg : 'O recurso procurado não foi encontrado'
                 };
 
-            logger.debug('Response - notFound: ' + JSON.stringify(status));
+            logger.warn('Response - notFound: ' + JSON.stringify(status));
 
             res.status(404).json(status);
         },
@@ -55,8 +55,8 @@ module.exports.init = function (app) {
                     'message': error.message
                 };
 
-            logger.debug('Response - serverError: ' + JSON.stringify(status));
-            logger.logError(error);
+            logger.error('Response - serverError: ' + JSON.stringify(status), error);
+            //logger.error(error);
 
             if (res._headerSent === false) {
                 res.status(500).json(status);

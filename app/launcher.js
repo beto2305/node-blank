@@ -24,16 +24,12 @@ exports.bootstrap = function () {
 
     // ***** Initialize Express ******
     // sentry support
-    if (null != config.sentry && config.sentry == 'enabled' && null !== process.env.SENTRY_DSN) {
-        Sentry.init({ dsn: process.env.SENTRY_DSN, environment: process.env.NODE_ENV });
-
+    if (null != config.sentry && config.sentry.enabled && null !== process.env.SENTRY_DSN) {
         // The request handler must be the first middleware on the app
         app.use(Sentry.Handlers.requestHandler());
 
         // The error handler must be before any other error middleware and after all controllers
         app.use(Sentry.Handlers.errorHandler());
-
-        app.set('Sentry', Sentry);
 
         logger.info("Sentry support is enabled!")
     }
@@ -61,7 +57,7 @@ exports.bootstrap = function () {
     app.set('config', config);
 
     // prometheus
-    if (null != config.prometheus && config.prometheus == 'enabled') {
+    if (null != config.prometheus && config.prometheus.enabled) {
         let prometheus = prometheusFactory.init(app, logger)
 
         /**

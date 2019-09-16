@@ -11,6 +11,11 @@
 		"maxLogFileSize": "10m",
 		"maxLogFiles": "30"
 	},
-	"sentry": "disabled",
-	"prometheus": "disabled"
+	"sentry": {
+		"enabled": false,
+		"logLevel": "debug"
+	},
+	"prometheus": {
+		"enabled": false
+	}
 }

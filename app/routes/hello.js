@@ -1,13 +1,13 @@
 'use strict';
 
 let apiFactory = require('../api/hello'),
-    responseFactory = require('../libs/response-factory').init(),
-    requestValidator = require('./hello-request-validator');
+  responseFactory = require('../libs/response-factory').init(),
+  requestValidator = require('./hello-request-validator');
 
 module.exports.init = function (app, logger) {
   logger.info("Initializing routes.")
 
-  let api = apiFactory.init(app,logger);
+  let api = apiFactory.init(app, logger);
 
   // ***** Route test server on! *****
   app.all(['/', '/api', '/api/v1'], function (req, res) {
@@ -35,7 +35,6 @@ module.exports.init = function (app, logger) {
 
   /* Erro Handler express-joi-validation */
   app.use((err, req, res, next) => {
-    app.get("Sentry").captureException(err.error)
     if (err.error && typeof err.error.isJoi !== 'undefined') {
       responseFactory.badRequest(req, res, err.error.toString(), logger);
     } else {

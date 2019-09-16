@@ -10,3 +10,4 @@ typings/
 typings.json
 jsconfig.json
 .history/
+.env
