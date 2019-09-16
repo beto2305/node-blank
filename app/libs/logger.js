@@ -19,7 +19,7 @@ module.exports.init = function (config) {
             // - Write all logs error (and below) to `error.log`.
             //
             new winston.transports.File({
-                filename: `logs / ${os.hostname()} - errors.log`,
+                filename: `logs/ ${os.hostname()} - errors.log`,
                 level: 'error',
                 maxSize: config.log.maxLogFileSize,
                 maxFiles: config.log.maxLogFiles
