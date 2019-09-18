@@ -3,7 +3,7 @@
 let responseFactory = require('../libs/response-factory').init(),
     helloControllerFactory = require('../controllers/hello');
 
-module.exports.init = function (app,logger) {
+module.exports.init = function (app, logger) {
     logger.info("Initializing APIs.")
 
     let controller = helloControllerFactory.init(logger);
@@ -14,8 +14,6 @@ module.exports.init = function (app,logger) {
             logger.debug("api.hello.handleHelloGetOne - req method: " + req.method);
             try {
                 let cpf = req.params.cpf;
-
-                throw new Error("sentry")
 
                 logger.debug("api.hello.handleHelloGetOne - CPF: " + cpf);
 

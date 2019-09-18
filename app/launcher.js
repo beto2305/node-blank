@@ -83,7 +83,7 @@ exports.bootstrap = function () {
 
 exports.run = function () {
 
-    app.listen(config.server.port, () => {
+    app.listen(process.env.PORT || config.server.port, () => {
         logger.info('Server initialized on ' + config.get('server.port') + " port");
     }).on('error', (err) => {
         logger.error('Err: Error listen server: ' + err);

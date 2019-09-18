@@ -32,6 +32,20 @@ module.exports.init = function (app) {
             res.status(400).json(status);
         },
 
+        // HTTP 1.1 / 401
+        unauthorized: (req, res, msg, logger) => {
+            let
+                status = {
+                    'code': 401,
+                    'error': 'Acesso não autorizado',
+                    'message': msg
+                };
+
+            logger.warn('Response - unauthorized: ' + JSON.stringify(status));
+
+            res.status(401).json(status);
+        },
+
         // HTTP 1.1 / 404
         notFound: (req, res, err, msg, logger) => {
             let

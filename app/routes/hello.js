@@ -2,12 +2,14 @@
 
 let apiFactory = require('../api/hello'),
   responseFactory = require('../libs/response-factory').init(),
-  requestValidator = require('./hello-request-validator');
+  requestValidator = require('./hello-request-validator'),
+  authFactory = require('./auth');
 
 module.exports.init = function (app, logger) {
   logger.info("Initializing routes.")
 
-  let api = apiFactory.init(app, logger);
+  const api = apiFactory.init(app, logger);
+  const auth = authFactory.init(logger)
 
   // ***** Route test server on! *****
   app.all(['/', '/api', '/api/v1'], function (req, res) {
@@ -19,9 +21,9 @@ module.exports.init = function (app, logger) {
   });
 
   // GET method
-  app.get('/api/v1/hello', api.handleHelloGetOne);
+  app.get('/api/v1/hello', auth.authenticateApiConsumer, api.handleHelloGetOne);
 
-  app.get('/api/v1/hello/:cpf', requestValidator.validateHelloGetOne(), api.handleHelloGetOne);
+  app.get('/api/v1/hello/:cpf', auth.authenticateApiConsumer, requestValidator.validateHelloGetOne(), api.handleHelloGetOne);
 
   // POST method 
   app.post('/api/v1/hello', requestValidator.validateHelloPost(), api.handleHelloPost);
